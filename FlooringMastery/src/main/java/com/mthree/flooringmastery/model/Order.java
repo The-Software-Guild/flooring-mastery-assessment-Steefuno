@@ -1,19 +1,18 @@
 /*
  * @author Steven Nguyen
  * @email: steven.686295@gmail.com
- * @date: 
+ * @date: 09 Aug 2021
  */
 
 package com.mthree.flooringmastery.model;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 /**
  * 
  * @author Steven
  */
-public class Order {
+public class Order implements Cloneable {
     private String customerName;
     private State state;
     private ProductType productType;
@@ -195,5 +194,22 @@ public class Order {
             (this.productType.equals(otherOrder.getProductType())) &&
             (this.area.equals(otherOrder.getArea()))
         );
+    }
+    
+    /**
+     * Creates another Order with the same fields
+     * @return the new Order
+     */
+    public Order copy() {
+        try {
+            return (Order) this.clone();
+        } catch (CloneNotSupportedException e) {
+            return new Order(
+                this.customerName,
+                this.state,
+                this.productType,
+                this.area
+            );
+        }
     }
 }
