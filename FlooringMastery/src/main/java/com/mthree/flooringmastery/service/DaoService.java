@@ -15,6 +15,7 @@ import com.mthree.flooringmastery.model.OrderID;
 import com.mthree.flooringmastery.model.ProductType;
 import com.mthree.flooringmastery.model.State;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 /**
  * 
@@ -51,7 +52,7 @@ public class DaoService {
      * @param date the date to find the orders of
      * @return the array of orders
      */
-    public Order[] getOrders(LocalDate date) {
+    public HashMap<Integer, Order> getOrders(LocalDate date) {
         return ordersDao.getOrders(date);
     }
     

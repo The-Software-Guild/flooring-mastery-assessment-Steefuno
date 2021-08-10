@@ -15,6 +15,7 @@ import com.mthree.flooringmastery.service.DaoService;
 import com.mthree.flooringmastery.view.View;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 /**
  * 
@@ -23,8 +24,8 @@ import java.time.format.DateTimeFormatter;
 public class Controller {
     final private View view;
     final private DaoService daoService;
-    final private static String dateFormat = "dd/MM/yyyy";
-    final private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateFormat);
+    final private static String DATEFORMAT = "dd/MM/yyyy";
+    final private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATEFORMAT);
     
     /**
      * Constructs a new Controller given the view and dao service
@@ -82,9 +83,9 @@ public class Controller {
      */
     private void displayOrders() {
         LocalDate date;
-        Order[] orders;
+        HashMap<Integer, Order> orders;
         
-        date = view.promptDate("\nWhat date should we check for orders? (dd-MM-yy)");
+        date = view.promptDate("\nWhat date should we check for orders? (" + DATEFORMAT + "):", DATEFORMAT);
         orders = daoService.getOrders(date);
         
         if (orders == null) {
@@ -110,14 +111,10 @@ public class Controller {
         
         states = daoService.getAllStates();
         productTypes = daoService.getAllProductTypes();
-        orderDetails = view.promptNewOrder(states, productTypes);
-        
-        if (orderDetails.getDate().compareTo(LocalDate.now()) <= 0) {
-            view.error("Your order must be in the future.");
-            return;
-        }
+        orderDetails = view.promptNewOrder(states, productTypes, DATEFORMAT);
         
         order = daoService.calculateOrder(orderDetails);
+        view.say("\n======== ORDER ========");
         view.displayOrder(order);
         
         getResponse: do {
