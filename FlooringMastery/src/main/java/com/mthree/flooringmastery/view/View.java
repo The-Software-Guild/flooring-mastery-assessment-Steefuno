@@ -30,6 +30,14 @@ public class View {
     }
     
     /**
+     * Displays an message to the user
+     * @param message the message to display
+     */
+    public void say(String message) {
+        
+    }
+    
+    /**
      * Displays an error to the user
      * @param message the message to display
      */
@@ -92,20 +100,19 @@ public class View {
     }
     
     /**
-     * Prompts the user to select an order id
-     * @param message the message to display to the user
-     * @return the orderID the user selected
-     */
-    private OrderID promptOrderID(String message) {
-        
-    }
-    
-    /**
      * Prompts the user to input a String
      * @param message the message to display to the user
      * @return the String the user inputted
      */
-    private String promptString(String message) {
+    public String promptString(String message) {
+        
+    }
+    
+    /**
+     * Prompts the user to select an order id
+     * @return the orderID the user selected
+     */
+    public OrderID promptOrderID() {
         
     }
     
