@@ -112,6 +112,11 @@ public class Controller {
         productTypes = daoService.getAllProductTypes();
         orderDetails = view.promptNewOrder(states, productTypes);
         
+        if (orderDetails.getDate().compareTo(LocalDate.now()) <= 0) {
+            view.error("Your order must be in the future.");
+            return;
+        }
+        
         order = daoService.calculateOrder(orderDetails);
         view.displayOrder(order);
         
