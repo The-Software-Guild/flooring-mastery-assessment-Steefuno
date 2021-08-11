@@ -41,8 +41,8 @@ public class OrdersDaoFileImplementation implements OrdersDao {
     final private static String DATEFORMAT = "MMddyyyy";
     final private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATEFORMAT);
     
-    final private static String orderFileNameStringPattern = "Orders_(\\d{2})(\\d{2})(\\d{4})";
-    final private static Pattern orderFileNamePattern = Pattern.compile(orderFileNameStringPattern);
+    final private static String ORDER_FILE_NAME_PATTERN_STRING = "Orders_(\\d{2})(\\d{2})(\\d{4})";
+    final private static Pattern ORDER_FILE_NAME_PATTERN = Pattern.compile(ORDER_FILE_NAME_PATTERN_STRING);
     
     /**
      * Constructs a new OrdersDaoFileImplementation
@@ -55,7 +55,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
         this.backupDao = backupDao;
         this.path = path;
         
-        this.orders = new HashMap<LocalDate, HashMap<Integer, Order>>();
+        this.orders = new HashMap<>();
         load(productsDao, taxesDao);
     }
     
@@ -64,6 +64,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
      * @param orderID the order id
      * @return the order or null
      */
+    @Override
     public Order getOrder(OrderID orderID) {
         HashMap<Integer, Order> dateOrders;
         Order order;
@@ -82,6 +83,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
      * @param date the date
      * @return the hashmap or null
      */
+    @Override
     public HashMap<Integer, Order> getOrders(LocalDate date) {
         return orders.get(date);
     }
@@ -91,6 +93,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
      * @param orderDetails the details of the new order
      * @return the id of the new order
      */
+    @Override
     public OrderID addOrder(OrderDetails orderDetails) {
         HashMap<Integer, Order> dateOrders;
         LocalDate date;
@@ -109,7 +112,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
         orderNumber = nextOrderNumber++;
         dateOrders.put(orderNumber, order);
         
-        return new OrderID(orderNumber.intValue(), date);
+        return new OrderID(orderNumber, date);
     }
     
     /**
@@ -117,6 +120,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
      * @param orderDetails the details of the order
      * @return the order
      */
+    @Override
     public Order calculateOrder(OrderDetails orderDetails) {
         return new Order(orderDetails);
     }
@@ -125,7 +129,9 @@ public class OrdersDaoFileImplementation implements OrdersDao {
      * Edits an existing order
      * @param orderID the id of the order
      * @param newOrder the new order to replace the old order
+     * @throws com.mthree.flooringmastery.dao.OrderDoesNotExistException
      */
+    @Override
     public void editOrder(OrderID orderID, Order newOrder) throws OrderDoesNotExistException {
         HashMap<Integer, Order> dateOrders;
         LocalDate date;
@@ -149,7 +155,9 @@ public class OrdersDaoFileImplementation implements OrdersDao {
     /**
      * Removes an order from memory
      * @param orderID the id of the order
+     * @throws com.mthree.flooringmastery.dao.OrderDoesNotExistException
      */
+    @Override
     public void removeOrder(OrderID orderID) throws OrderDoesNotExistException {
         HashMap<Integer, Order> dateOrders;
         LocalDate date;
@@ -173,6 +181,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
     /**
      * Saves all orders in memory to file
      */
+    @Override
     public void export() {
         File dir;
         
@@ -207,7 +216,25 @@ public class OrdersDaoFileImplementation implements OrdersDao {
                 System.out.println("Failed to create file to save " + fileName + ".");
                 continue;
             }
-            
+
+            // add the header
+            out.println(
+                String.format(
+                    "%s::%s::%s::%s::%s::%s::%s::%s::%s::%s::%s::%s",
+                    "Order Number",
+                    "Customer Name",
+                    "State",
+                    "Tax Rate",
+                    "Product Type",
+                    "Area in Square Feet",
+                    "Material Cost per sq ft",
+                    "Labor Cost per sq ft",
+                    "Material Cost",
+                    "Labor Cost",
+                    "Tax",
+                    "Total"
+                )
+            );            
             // for each order, save to file
             for (Entry<Integer, Order> dateOrdersEntry: dateOrders.entrySet()) {
                 Order order;
@@ -222,6 +249,8 @@ public class OrdersDaoFileImplementation implements OrdersDao {
             out.flush();
             out.close();
         }
+        
+        backupDao.save(orders);
     }
     
     /**
@@ -254,11 +283,11 @@ public class OrdersDaoFileImplementation implements OrdersDao {
                 );
             } catch (FileNotFoundException e) {
                 System.out.println("Failed to read file to load orders " + name + ".");
-                continue;
+                System.exit(-1);
             }
             
             // extract the date from the filename
-            matcher = orderFileNamePattern.matcher(name);
+            matcher = ORDER_FILE_NAME_PATTERN.matcher(name);
             matcher.find();
             try {
                 month = Integer.parseInt(
@@ -359,7 +388,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
     /**
      * Saves an order into the appropriate file
      * @param out the printwriter to output to the file
-     * @param orderID the date and order number
+     * @param orderNumber the order number
      * @param order the order to save
      */
     private void saveLine(PrintWriter out, Integer orderNumber, Order order) {
@@ -372,7 +401,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
         
         output = String.format(
             "%s::%s::%s::%s::%s::%s::%s::%s::%s::%s::%s::%s",
-            orderNumber.intValue(),
+            orderNumber,
             order.getCustomerName(),
             state.getAbbreviation(),
             state.getTaxRate(),
