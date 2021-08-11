@@ -6,6 +6,7 @@
 
 package com.mthree.flooringmastery.service;
 
+import com.mthree.flooringmastery.dao.OrderDoesNotExistException;
 import com.mthree.flooringmastery.dao.OrdersDao;
 import com.mthree.flooringmastery.dao.ProductsDao;
 import com.mthree.flooringmastery.dao.TaxesDao;
@@ -70,7 +71,7 @@ public class DaoService {
      * @param orderDetails the details of the order to create
      * @return the order
      */
-    public Order calculatOrder(OrderDetails orderDetails) {
+    public Order calculateOrder(OrderDetails orderDetails) {
         return ordersDao.calculateOrder(orderDetails);
     }
     
@@ -79,7 +80,7 @@ public class DaoService {
      * @param orderID the ID of the order to replace
      * @param order the new order data
      */
-    public void editOrder(OrderID orderID, Order order) {
+    public void editOrder(OrderID orderID, Order order) throws OrderDoesNotExistException {
         ordersDao.editOrder(orderID, order);
     }
     
@@ -87,8 +88,8 @@ public class DaoService {
      * Removes an order from memory
      * @param orderID the ID of the order
      */
-    public void removeOrder(OrderID orderID) {
-        ordersDao.removeORder(orderID);
+    public void removeOrder(OrderID orderID) throws OrderDoesNotExistException {
+        ordersDao.removeOrder(orderID);
     }
     
     /**

@@ -6,6 +6,7 @@
 
 package com.mthree.flooringmastery.controller;
 
+import com.mthree.flooringmastery.dao.OrderDoesNotExistException;
 import com.mthree.flooringmastery.model.Order;
 import com.mthree.flooringmastery.model.OrderDetails;
 import com.mthree.flooringmastery.model.OrderID;
@@ -146,7 +147,7 @@ public class Controller {
         ProductType[] productTypes;
         String response;
         
-        orderID = view.promptOrderID();
+        orderID = view.promptOrderID(DATEFORMAT);
         order = daoService.getOrder(orderID);
         
         if (order == null) {
@@ -173,7 +174,13 @@ public class Controller {
             }
         } while(true);
         
-        daoService.editOrder(orderID, newOrder);
+        try {
+            daoService.editOrder(orderID, newOrder);
+        } catch (OrderDoesNotExistException e) {
+            view.error("That Order does not exist.");
+            return;
+        }
+        
         view.say("Updated Order number, " + orderID.getNumber() + ".");
     }
     
@@ -186,7 +193,7 @@ public class Controller {
         Order order;
         String response;
         
-        orderID = view.promptOrderID();
+        orderID = view.promptOrderID(DATEFORMAT);
         order = daoService.getOrder(orderID);
         
         if (order == null) {
