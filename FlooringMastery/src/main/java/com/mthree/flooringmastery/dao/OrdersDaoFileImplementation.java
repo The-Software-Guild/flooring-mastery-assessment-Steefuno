@@ -284,6 +284,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
             } catch (FileNotFoundException e) {
                 System.out.println("Failed to read file to load orders " + name + ".");
                 System.exit(-1);
+                return;
             }
             
             // extract the date from the filename
