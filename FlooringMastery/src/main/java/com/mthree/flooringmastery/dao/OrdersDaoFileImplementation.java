@@ -104,7 +104,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
         
         dateOrders = orders.get(date);
         if (dateOrders == null) {
-            dateOrders = new HashMap<Integer, Order>();
+            dateOrders = new HashMap<>();
             orders.put(date, dateOrders);
         }
         
@@ -240,7 +240,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
                 )
             );            
             // for each order, save to file
-            for (Entry<Integer, Order> dateOrdersEntry: dateOrders.entrySet()) {
+            dateOrders.entrySet().forEach(dateOrdersEntry -> {
                 Order order;
                 Integer orderNumber;
                 
@@ -248,7 +248,7 @@ public class OrdersDaoFileImplementation implements OrdersDao {
                 orderNumber = dateOrdersEntry.getKey();
                 
                 saveLine(out, orderNumber, order);
-            }
+            });
             
             out.flush();
             out.close();

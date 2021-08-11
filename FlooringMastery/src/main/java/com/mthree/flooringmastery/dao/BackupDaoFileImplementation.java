@@ -75,7 +75,7 @@ public class BackupDaoFileImplementation implements BackupDao {
         );   
         
         // for each dateOrder
-        for (Entry<LocalDate, HashMap<Integer, Order>> ordersEntry: orders.entrySet()) {
+        orders.entrySet().forEach(ordersEntry -> {
             LocalDate date;
             HashMap<Integer, Order> dateOrders;
             
@@ -83,7 +83,7 @@ public class BackupDaoFileImplementation implements BackupDao {
             dateOrders = ordersEntry.getValue();
             
             // for each order, save
-            for (Entry<Integer, Order> dateOrdersEntry: dateOrders.entrySet()) {
+            dateOrders.entrySet().forEach(dateOrdersEntry -> {
                 Integer orderNumber;
                 Order order;
                 OrderID orderID;
@@ -93,8 +93,8 @@ public class BackupDaoFileImplementation implements BackupDao {
                 orderID = new OrderID(orderNumber, date);
                 
                 saveLine(out, orderID, order);
-            }
-        }
+            });
+        });
         
         out.flush();
         out.close();
