@@ -22,7 +22,7 @@ import java.util.Map.Entry;
  * 
  * @author Steven
  */
-public class BackupDaoFileImplementation {
+public class BackupDaoFileImplementation implements BackupDao {
     final private String path;
     
     final private static String DATEFORMAT = "dd-MM-yyyy";
@@ -40,6 +40,7 @@ public class BackupDaoFileImplementation {
      * Saves all orders to one backup
      * @param orders a hashmap of all the orders
      */
+    @Override
     public void save(HashMap<LocalDate, HashMap<Integer, Order>> orders) {
         PrintWriter out;
         
@@ -48,9 +49,30 @@ public class BackupDaoFileImplementation {
                 new FileWriter(path)
             );
         } catch (IOException e) {
-            System.out.println("Open file to write backup: " + path + ".");
+            System.out.println("Failed to open file to write backup: " + path + ".");
+            System.exit(-1);
             return;
         }
+        
+        // add the header
+        out.println(
+            String.format(
+                "%s::%s::%s::%s::%s::%s::%s::%s::%s::%s::%s::%s::%s",
+                "Order Number",
+                "Customer Name",
+                "State",
+                "Tax Rate",
+                "Product Type",
+                "Area in Square Feet",
+                "Material Cost per sq ft",
+                "Labor Cost per sq ft",
+                "Material Cost",
+                "Labor Cost",
+                "Tax",
+                "Total",
+                "Date"
+            )
+        );   
         
         // for each dateOrder
         for (Entry<LocalDate, HashMap<Integer, Order>> ordersEntry: orders.entrySet()) {
@@ -73,6 +95,9 @@ public class BackupDaoFileImplementation {
                 saveLine(out, orderID, order);
             }
         }
+        
+        out.flush();
+        out.close();
     }
     
     /**

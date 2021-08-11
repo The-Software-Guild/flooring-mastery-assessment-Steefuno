@@ -147,7 +147,7 @@ public class Controller {
         ProductType[] productTypes;
         String response;
         
-        orderID = view.promptOrderID(DATEFORMAT);
+        orderID = view.promptOrderID(DATEFORMAT, false);
         order = daoService.getOrder(orderID);
         
         if (order == null) {
@@ -193,7 +193,7 @@ public class Controller {
         Order order;
         String response;
         
-        orderID = view.promptOrderID(DATEFORMAT);
+        orderID = view.promptOrderID(DATEFORMAT, false);
         order = daoService.getOrder(orderID);
         
         if (order == null) {

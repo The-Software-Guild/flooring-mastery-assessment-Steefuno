@@ -7,5 +7,32 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
     "
 >
-
+    <bean id="controller" class="com.mthree.flooringmastery.controller.Controller">
+        <constructor-arg ref="view"/>
+        <constructor-arg ref="daoService"/>
+    </bean>
+    <bean id="view" class="com.mthree.flooringmastery.view.View">
+        <constructor-arg ref="ui"/>
+    </bean>
+    <bean id="ui" class="com.mthree.flooringmastery.view.UIConsoleImplementation"/>
+    <bean id="daoService" class="com.mthree.flooringmastery.service.DaoService">
+        <constructor-arg ref="ordersDao"/>
+        <constructor-arg ref="productsDao"/>
+        <constructor-arg ref="taxesDao"/>
+    </bean>
+    <bean id="ordersDao" class="com.mthree.flooringmastery.dao.OrdersDaoFileImplementation">
+        <constructor-arg ref="backupDao"/>
+        <constructor-arg value=".\src\main\resources\FileData\Orders\"/>
+        <constructor-arg ref="productsDao"/>
+        <constructor-arg ref="taxesDao"/>
+    </bean>
+    <bean id="backupDao" class="com.mthree.flooringmastery.dao.BackupDaoFileImplementation">
+        <constructor-arg value=".\src\main\resources\FileData\Backup\DataExport"/>
+    </bean>
+    <bean id="productsDao" class="com.mthree.flooringmastery.dao.ProductsDaoFileImplementation">
+        <constructor-arg value=".\src\main\resources\FileData\Data\Products"/>
+    </bean>
+    <bean id="taxesDao" class="com.mthree.flooringmastery.dao.TaxesDaoFileImplementation">
+        <constructor-arg value=".\src\main\resources\FileData\Data\Taxes"/>
+    </bean>
 </beans>

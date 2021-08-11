@@ -7,6 +7,7 @@
 package com.mthree.flooringmastery.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * 
@@ -118,7 +119,7 @@ public class Order implements Cloneable {
         return
             area.multiply(
                 productType.getMaterialCostPerSquareFoot()
-            ).setScale(2)
+            ).setScale(2, RoundingMode.HALF_UP)
         ;
     }
     
@@ -131,7 +132,7 @@ public class Order implements Cloneable {
         return
             area.multiply(
                 productType.getLaborCostPerSquareFoot()
-            ).setScale(2)
+            ).setScale(2, RoundingMode.HALF_UP)
         ;
     }
     
@@ -148,7 +149,7 @@ public class Order implements Cloneable {
                 state.getTaxRate().multiply(
                     new BigDecimal(0.01)
                 )
-            ).setScale(2)
+            ).setScale(2, RoundingMode.HALF_UP)
         ;
     }
     
@@ -167,7 +168,7 @@ public class Order implements Cloneable {
                 ).add(
                     new BigDecimal(1)
                 )
-            ).setScale(2)
+            ).setScale(2, RoundingMode.HALF_UP)
         ;
     }
     

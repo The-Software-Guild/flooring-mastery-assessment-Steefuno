@@ -176,6 +176,10 @@ public class OrdersDaoFileImplementation implements OrdersDao {
         }
         
         dateOrders.remove(orderNumber);
+        
+        if (dateOrders.isEmpty()) {
+            orders.remove(date);
+        }
     }
     
     /**
@@ -350,6 +354,11 @@ public class OrdersDaoFileImplementation implements OrdersDao {
         } catch(NumberFormatException e) {
             System.out.println("Failed to read order number: " + line);
             return;
+        }
+        
+        // update the dao's highest order number
+        if (orderNumber >= nextOrderNumber) {
+            nextOrderNumber = orderNumber + 1;
         }
         
         // get the customer name

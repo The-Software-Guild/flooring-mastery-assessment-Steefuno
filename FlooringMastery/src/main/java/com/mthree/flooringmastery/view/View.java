@@ -77,7 +77,7 @@ public class View {
         
         ui.say(
             "Customer Name: " + order.getCustomerName() + "\n" +
-            "State: " + order.getState() + "\n" + 
+            "State: " + order.getState().getName() + "\n" + 
             "Product Type: " + productType.getName() + "\n" +
             "Area: " + order.getArea()+ " sq ft\n" + 
 //            "Material Cost Per Square Foot: $" + productType.getMaterialCostPerSquareFoot() + "\n" +
@@ -98,7 +98,7 @@ public class View {
         String selection;
         promptMenu: do {
             selection = promptString(
-                "======== FLOORING PROGRAM MAIN MENU ========\n" + 
+                "\n======== FLOORING PROGRAM MAIN MENU ========\n" + 
                 "DISPLAY - Display Orders\n" + 
                 "ADD - Add an Order\n" + 
                 "EDIT - Edit an Order\n" + 
@@ -186,7 +186,7 @@ public class View {
         selection = promptString("\nPlease select a State to place the order in:").toLowerCase();
         while (!statesMap.containsKey(selection)) {
             selection = promptString(
-                "\nInvalid State.\n" + 
+                "Invalid State.\n\n" + 
                 "States: " + listOfStates + "\n" + 
                 "Please select a State to place the order in:").toLowerCase();
         }
@@ -208,7 +208,7 @@ public class View {
         selection = promptString("\nPlease select a Product Type to place the order in:").toLowerCase();
         while (!productTypesMap.containsKey(selection)) {
             selection = promptString(
-                "\nInvalid Product Type.\n" + 
+                "Invalid Product Type.\n\n" + 
                 "Product Types: " + listOfProductTypes + "\n" + 
                 "Please select a Product Type:").toLowerCase();
         }
@@ -395,9 +395,10 @@ public class View {
     /**
      * Prompts the user to select an order id
      * @param dateFormat the format of dates in prompts
+     * @param mustBeFuture outputs an error if the inputted date is not in the future
      * @return the orderID the user selected
      */
-    public OrderID promptOrderID(String dateFormat) {
+    public OrderID promptOrderID(String dateFormat, boolean mustBeFuture) {
         DateTimeFormatter dateFormatter;
         LocalDate date;
         int number;
@@ -411,7 +412,7 @@ public class View {
             "Please input a date for the order: (" + dateFormat + ")",
             dateFormat
         );
-        while(date.compareTo(LocalDate.now()) <= 0) {
+        while((mustBeFuture) && (date.compareTo(LocalDate.now()) <= 0)) {
             date = promptDate(
                 "Your order's date must be in the future.\n\n" + 
                 "Today's date is " + LocalDate.now().format(dateFormatter) + ".\n" +

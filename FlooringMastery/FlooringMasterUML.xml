@@ -195,7 +195,7 @@
         <mxCell id="6ZmHcXdMrOf0HNpB8yth-82" value="+ promptString(String): String" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="6ZmHcXdMrOf0HNpB8yth-74" vertex="1">
           <mxGeometry y="268" width="400" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="6ZmHcXdMrOf0HNpB8yth-81" value="+ promptOrderID(String): OrderID" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="6ZmHcXdMrOf0HNpB8yth-74" vertex="1">
+        <mxCell id="6ZmHcXdMrOf0HNpB8yth-81" value="+ promptOrderID(String, boolean): OrderID" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="6ZmHcXdMrOf0HNpB8yth-74" vertex="1">
           <mxGeometry y="294" width="400" height="26" as="geometry" />
         </mxCell>
         <mxCell id="6ZmHcXdMrOf0HNpB8yth-83" value="- promptNumber(String): BigDecimal" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="6ZmHcXdMrOf0HNpB8yth-74" vertex="1">
