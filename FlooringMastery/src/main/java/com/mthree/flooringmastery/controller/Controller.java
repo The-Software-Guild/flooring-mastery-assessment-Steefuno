@@ -216,7 +216,13 @@ public class Controller {
             }
         } while(true);
         
-        daoService.removeOrder(orderID);
+        try {
+            daoService.removeOrder(orderID);
+        } catch(OrderDoesNotExistException e) {
+            view.error("That Order does not exist.");
+            return;
+        }
+        
         view.say("Removed Order number, " + orderID.getNumber() + ".");
     }
     
