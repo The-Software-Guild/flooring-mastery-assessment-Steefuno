@@ -79,6 +79,7 @@ public class DaoService {
      * Replaces an Order in memory with a new order
      * @param orderID the ID of the order to replace
      * @param order the new order data
+     * @throws com.mthree.flooringmastery.dao.OrderDoesNotExistException
      */
     public void editOrder(OrderID orderID, Order order) throws OrderDoesNotExistException {
         ordersDao.editOrder(orderID, order);
@@ -87,6 +88,7 @@ public class DaoService {
     /**
      * Removes an order from memory
      * @param orderID the ID of the order
+     * @throws com.mthree.flooringmastery.dao.OrderDoesNotExistException
      */
     public void removeOrder(OrderID orderID) throws OrderDoesNotExistException {
         ordersDao.removeOrder(orderID);
